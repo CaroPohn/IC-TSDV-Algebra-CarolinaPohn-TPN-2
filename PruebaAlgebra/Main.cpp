@@ -24,7 +24,7 @@ void main()
 
     Vector3 startPos = { 0.0f, 0.0f, 0.0f };
 
-    Vector3 vectorA = { (float)GetRandomValue(2.0f, 8.0f), (float)GetRandomValue(2.0f, 8.0f), (float)GetRandomValue(2.0f, 8.0f)}; //Vector A 
+    Vector3 vectorA = { (float)GetRandomValue(2.0f, 8.0f), (float)GetRandomValue(2.0f, 8.0f), (float)GetRandomValue(2.0f, 8.0f) }; //Vector A 
     Vector3 vectorB = { 0.0f, 0.0f, 0.0f }; //Vector B
     Vector3 vectorC = { 0.0f, 0.0f, 0.0f }; //Vector C
 
@@ -53,7 +53,7 @@ void main()
     SetNewMagnitude(vectorB, magnitudeA); //Normaliza y multiplica magnitud Vector B por la magnitud Vector A
     GetMagnitude(vectorB, magnitudeB); //Magnitud actual de Vector B
 
-    //GetVertical(vectorA, vectorC); //Crea Vector C
+    //Crea Vector C
     CrossProduct(vectorA, vectorB, startPos, vectorC);
 
     cout << "\nMagnitud A: " << magnitudeA << endl;
@@ -97,7 +97,7 @@ void main()
                 userInput = (float)key;
 
                 starting = false;
-            }  
+            }
         }
         else
         {
@@ -180,7 +180,7 @@ void CameraHandler(Camera3D& camera, int& cameraMode)
             camera.target = { 0.0f, 2.0f, 0.0f };
             camera.up = { 0.0f, 1.0f, 0.0f };
             camera.projection = CAMERA_ORTHOGRAPHIC;
-            camera.fovy = 20.0f; 
+            camera.fovy = 20.0f;
         }
         else if (camera.projection == CAMERA_ORTHOGRAPHIC)
         {
@@ -244,7 +244,7 @@ void CrossProduct(Vector3 vector1, Vector3 vector2, Vector3 vertex, Vector3& vec
 void GetVertical(Vector3 endPos, Vector3& vertical)
 {
     vertical.y = endPos.x;
-    vertical.x = -1 *endPos.y;
+    vertical.x = -1 * endPos.y;
 }
 
 void DrawInstructions()
@@ -316,12 +316,12 @@ void DrawPyramid(Vector3 startPos, Vector3 vectorA, Vector3 vectorB, Vector3 vec
     DrawLine3D(startPos, vectorC, BLUE); //Dibuja Vector C
 
     float floorQnty = userInput / 2; //Cantidad de veces que se repetirá el for que dibuja los pisos. 
-    
+
     float actualMagnitude{};
 
     actualMagnitude = Vector3Distance(dinamicStartPos, Vector3Scale(reductionStartPos, 0)), Vector3Add(dinamicA, Vector3Scale(reductionA, 0));
 
-    surface += (actualMagnitude * actualMagnitude);
+    surface += (actualMagnitude * actualMagnitude) * 2; //faltaba multiplicar por 2
 
     for (int i = 0; i < floorQnty; i++)
     {
@@ -329,14 +329,14 @@ void DrawPyramid(Vector3 startPos, Vector3 vectorA, Vector3 vectorB, Vector3 vec
         DrawLine3D(Vector3Add(dinamicStartPos, (Vector3Scale(reductionStartPos, i))), Vector3Add(Vector3Add(dinamicStartPos, (Vector3Scale(reductionStartPos, i))), vectorC), PINK);
         DrawLine3D(Vector3Add(dinamicA, (Vector3Scale(reductionA, i))), Vector3Add(Vector3Add(dinamicA, (Vector3Scale(reductionA, i))), vectorC), PINK);
         DrawLine3D(Vector3Add(dinamicB, (Vector3Scale(reductionB, i))), Vector3Add(Vector3Add(dinamicB, (Vector3Scale(reductionB, i))), vectorC), PINK);
-        DrawLine3D(Vector3Add(dinamicC, (Vector3Scale(reductionC, i))), Vector3Add(Vector3Add(dinamicC, (Vector3Scale(reductionC, i))), vectorC), PINK); 
+        DrawLine3D(Vector3Add(dinamicC, (Vector3Scale(reductionC, i))), Vector3Add(Vector3Add(dinamicC, (Vector3Scale(reductionC, i))), vectorC), PINK);
 
         DrawLine3D(Vector3Add(dinamicStartPos, Vector3Scale(reductionStartPos, i)), Vector3Add(dinamicA, Vector3Scale(reductionA, i)), VIOLET);
         actualMagnitude = Vector3Distance(dinamicStartPos, Vector3Scale(reductionStartPos, i)), Vector3Add(dinamicA, Vector3Scale(reductionA, i));
         perimeter += ((actualMagnitude * 8.0f) + (magnitudeC * 4.0f));
-        surface +=  (actualMagnitude * 4.0f) * magnitudeC;
+        surface += (actualMagnitude * 4.0f) * magnitudeC;
         volume += ((actualMagnitude * actualMagnitude) * magnitudeC);
-       
+
         DrawLine3D(Vector3Add(dinamicStartPos, Vector3Scale(reductionStartPos, i)), Vector3Add(dinamicB, Vector3Scale(reductionB, i)), VIOLET);
         DrawLine3D(Vector3Add(dinamicC, Vector3Scale(reductionC, i)), Vector3Add(dinamicA, Vector3Scale(reductionA, i)), VIOLET);
         DrawLine3D(Vector3Add(dinamicC, Vector3Scale(reductionC, i)), Vector3Add(dinamicB, Vector3Scale(reductionB, i)), VIOLET);
