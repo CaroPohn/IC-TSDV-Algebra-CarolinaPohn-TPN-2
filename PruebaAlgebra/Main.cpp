@@ -12,10 +12,8 @@ void GetFirstPerpendicular(Vector3 endPos, Vector3& perpendicular);
 void NormalizeVector(Vector3& vector);
 void SetNewMagnitude(Vector3& vector, float designedMagnitude);
 void CrossProduct(Vector3 vector1, Vector3 vector2, Vector3 vertex, Vector3& vectorPerp);
-void GetVertical(Vector3 endPos, Vector3& vertical);
 void DrawInstructions();
 void DrawPyramid(Vector3 startPos, Vector3 vectorA, Vector3 vectorB, Vector3 vectorC, float magnitudeC, float userInput, float& perimeter, float& surface, float& volume);
-float CalculateScalarProduct(Vector3 vector1, Vector3 vector2);
 void ShowFinalCalcResults(float perimeter, float surface, float volume);
 
 void main()
@@ -196,22 +194,17 @@ void CameraHandler(Camera3D& camera, int& cameraMode)
     UpdateCamera(&camera, cameraMode);
 }
 
-float CalculateScalarProduct(Vector3 vector1, Vector3 vector2)
-{
-    float scalarProduct = (vector1.x * vector2.x) + (vector1.y * vector2.y) + (vector1.z * vector2.z);
-
-    return scalarProduct;
-}
-
 void GetMagnitude(Vector3 endPos, float& magnitude)
 {
     magnitude = sqrt(pow(endPos.x, 2.0f) + pow(endPos.y, 2.0f) + pow(endPos.z, 2.0f));
 }
 
-void GetFirstPerpendicular(Vector3 endPos, Vector3& perpendicular)
+void GetFirstPerpendicular(Vector3 endPos, Vector3& perpendicular) //endpos es el vector A y perpendicular es el vector B
 {
     perpendicular.x = endPos.z;
     perpendicular.z = -1 * endPos.x;
+
+    //intercambio sus componentes y le cambio el signo a uno de ellos, esto lo rotará
 }
 
 void NormalizeVector(Vector3& vector)
@@ -234,17 +227,11 @@ void SetNewMagnitude(Vector3& vector, float designedMagnitude)
     vector.z *= designedMagnitude;
 }
 
-void CrossProduct(Vector3 vector1, Vector3 vector2, Vector3 vertex, Vector3& vectorPerp)
-{
+void CrossProduct(Vector3 vector1, Vector3 vector2, Vector3 vertex, Vector3& vectorPerp) //Se le suma el vertex para posicionarlo en la posicion de inicio donde estan los otros vectores a y b
+{                                                                                        //A2*B3 - A3*B2 , A3*B1 - A1*B3 , A1*B2 - A2*B1
     vectorPerp.x = ((vector1.y * vector2.z) - (vector1.z * vector2.y)) + vertex.x;
     vectorPerp.y = ((vector1.z * vector2.x) - (vector1.x * vector2.z)) + vertex.y;
     vectorPerp.z = ((vector1.x * vector2.y) - (vector1.y * vector2.x)) + vertex.z;
-}
-
-void GetVertical(Vector3 endPos, Vector3& vertical)
-{
-    vertical.y = endPos.x;
-    vertical.x = -1 * endPos.y;
 }
 
 void DrawInstructions()
@@ -321,7 +308,7 @@ void DrawPyramid(Vector3 startPos, Vector3 vectorA, Vector3 vectorB, Vector3 vec
 
     actualMagnitude = Vector3Distance(dinamicStartPos, Vector3Scale(reductionStartPos, 0)), Vector3Add(dinamicA, Vector3Scale(reductionA, 0));
 
-    surface += (actualMagnitude * actualMagnitude) * 2; //faltaba multiplicar por 2
+    surface += (actualMagnitude * actualMagnitude) * 2; //multiplicar por 2
 
     for (int i = 0; i < floorQnty; i++)
     {
@@ -334,7 +321,7 @@ void DrawPyramid(Vector3 startPos, Vector3 vectorA, Vector3 vectorB, Vector3 vec
         DrawLine3D(Vector3Add(dinamicStartPos, Vector3Scale(reductionStartPos, i)), Vector3Add(dinamicA, Vector3Scale(reductionA, i)), VIOLET);
         actualMagnitude = Vector3Distance(dinamicStartPos, Vector3Scale(reductionStartPos, i)), Vector3Add(dinamicA, Vector3Scale(reductionA, i));
         perimeter += ((actualMagnitude * 8.0f) + (magnitudeC * 4.0f));
-        surface += (actualMagnitude * 4.0f) * magnitudeC;
+        surface += (actualMagnitude * magnitudeC) * 4.0f;
         volume += ((actualMagnitude * actualMagnitude) * magnitudeC);
 
         DrawLine3D(Vector3Add(dinamicStartPos, Vector3Scale(reductionStartPos, i)), Vector3Add(dinamicB, Vector3Scale(reductionB, i)), VIOLET);
